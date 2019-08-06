@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ title }}</title>
+</head>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+<script type="text/javascript" src="js/category.js"></script>
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<body>
+<nav class="navbar navbar-expand-md navbar-light bg-light">
+    <div class="navbar-collapse collapse w-100">
+        <ul class="navbar-nav mr-auto">
+            {% for category in categories %}
+            <li class="nav-item">
+                <a href="?path=categories&id={{ category.id_category }}" link="{{ category.id_category }}"
+                   class="nav-link category-link">{{
+                    category.name }}</a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="collapse navbar-collapse justify-content-end">
+        <ul class="navbar-nav mr-auto">
+            {% if session.userName is defined %}
+            <li class="nav-item">
+                <a href="?path=user&action=profile" class="nav-link">{{ session.userName }}</a>
+            </li>
+            <li class="nav-item">
+                <a href="?path=user&action=logout" class="nav-link">Logout</a>
+            </li>
+            {% else %}
+            <li class="nav-item">
+                <a href="?path=user&action=login" class="nav-link">Login</a>
+            </li>
+            <li class="nav-item">
+                <a href="?path=user&action=register" class="nav-link">Register</a>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+</nav>
+<div class="container">
+
+
+

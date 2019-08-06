@@ -1,0 +1,11 @@
+{% include 'header.html' %}
+<h2>Welcome to profile!</h2>
+<p>Your visit history:</p>
+<ul>
+    {% for url in session.history %}
+    <li>
+        <a href="{{url}}" class="category-link">{{ url }}</a>
+    </li>
+    {% endfor %}
+</ul>
+{% include 'footer.html' %}
