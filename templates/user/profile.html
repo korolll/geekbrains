@@ -1,4 +1,4 @@
-{% include 'header.html' %}
+{% include 'userHeader.html' %}
 <h2>Welcome to profile!</h2>
 <p>Your visit history:</p>
 <ul>
@@ -8,4 +8,17 @@
     </li>
     {% endfor %}
 </ul>
-{% include 'footer.html' %}
+
+<p>Your basket:</p>
+{% if session.basket %}
+<ul>
+    {% for item in session.basket %}
+    <li>
+        <a href="?path=goods&id={{item.id}}" class="category-link">{{ item.name }}</a> / number: {{item.count}}
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>empty</p>
+{% endif %}
+{% include 'userFooter.html' %}

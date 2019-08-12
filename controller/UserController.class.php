@@ -1,14 +1,15 @@
 <?php
+
 class UserController extends Controller
 {
     public $view = 'user';
     public $title = 'user';
-    
+
     public function register()
     {
         if (!empty($_POST['userName']) && !empty($_POST['password']) && !empty($_POST['repeatPassword'])) {
             if ($_POST['password'] !== $_POST['repeatPassword']) {
-                    return [];
+                return [];
             }
             $user = new User([
                 'name' => $_POST['userName'],
@@ -19,6 +20,7 @@ class UserController extends Controller
                 $this->goToMain();
             }
         }
+
         return [];
     }
 
@@ -35,6 +37,7 @@ class UserController extends Controller
                 $this->goToMain();
             }
         }
+
         return [];
     }
 
@@ -42,11 +45,39 @@ class UserController extends Controller
     {
         unset($_SESSION['userName']);
         unset($_SESSION['data']);
+        unset($_SESSION['basket']);
         $this->goToMain();
     }
 
     public function profile()
     {
+        return [];
+    }
+
+    public function addToBasket()
+    {
+        $goodId = $_GET['id'];
+        $issetGood = false;
+        if (!isset($_SESSION['basket'])) {
+            $_SESSION['basket'] = [];
+        }
+        foreach ($_SESSION['basket'] as $key=>$item) {
+            if ($item['id'] == $goodId) {
+                $issetGood = true;
+                $_SESSION['basket'][$key]['count'] += 1;
+            }
+        }
+        $good = Good::getGood($goodId);
+
+        if (!$issetGood) {
+            $_SESSION['basket'][] = [
+                'id' => $goodId,
+                'name' => $good['name'],
+                'price' => $good['price'],
+                'count' => 1
+            ];
+        }
+
         return [];
     }
 

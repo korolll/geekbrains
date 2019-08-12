@@ -57,6 +57,7 @@ class App
                 echo $template->render($data);
             } else {
                 echo json_encode($data);
+                return true;
             }
         }
     }

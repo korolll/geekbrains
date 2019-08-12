@@ -1,17 +1,19 @@
 {% include 'header.html' %}
-<div id="catalog-data">
-    <ul>
-        {% for subcategory in content_data.subcategories %}
-        <li><a href="/index.php?page=categories&id={{ subcategory.id_category }}">{{ subcategory.name }}</a></li>
-        {% endfor %}
-    </ul>
-</div>
-
-<div id="goods-data">
-    <ul>
-        {% for good in content_data.goods %}
-        <li><a href="">{{ good.name }}</a></li>
-        {% endfor %}
-    </ul>
+<div class="col-sm px-5 mt-3 mx-auto">
+    {% for item in content_data.goods %}
+    <div class="d-inline-block col-lg-4">
+        <div class="col text-center">
+            <img src="../../img/nophoto.png" style="width: 200px;">
+        </div>
+        <div class="col text-center">
+            <a href="#">{{item.name}}</a>
+        </div>
+        {% if session.userName is defined %}
+        <div class="col text-center">
+            <button class="btn btn-default">Add to basket</button>
+        </div>
+        {% endif %}
+    </div>
+    {% endfor %}
 </div>
 {% include 'footer.html' %}

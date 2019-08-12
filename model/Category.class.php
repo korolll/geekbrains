@@ -1,6 +1,7 @@
 <?php
 
-class Category extends Model {
+class Category extends Model
+{
     protected static $table = 'categories';
 
     protected static function setProperties()
@@ -17,9 +18,31 @@ class Category extends Model {
 
     public static function getCategories($parentId = 0)
     {
-        return db::getInstance()->Select(
-            'SELECT id_category, name FROM categories WHERE status=:status AND parent_id = :parent_id',
-            ['status' => Status::Active, 'parent_id' => $parentId]);
+        $data =  db::getInstance()->Select(
+            'SELECT * FROM categories WHERE status=:status',
+            ['status' => Status::Active]
+        );
+        $tree = [];
+        self::makeTree( $data, 0, $tree );
 
+        return $tree;
+    }
+
+    private static function makeTree( $data, $level, &$tree )
+    {
+        for ( $i=0, $n=count($data); $i < $n; $i++ )
+        {
+            if ( $data[$i]['parent_id'] == $level )
+            {
+                $branch = array(
+                    'id' => $data[$i]['id_category'],
+                    'name' => $data[$i]['name'],
+                    'children' => []
+                );
+                self::makeTree( $data, $data[$i]['id_category'], $branch['children'] );
+                $tree[] = $branch;
+            }
+        }
+        return $tree;
     }
 }

@@ -11,5 +11,11 @@ class IndexController extends Controller
         $this->title .= ' | Главная';
     }
 
+    function index($data)
+    {
+        $goods = Good::getGoods();
+        return ['goods' => $goods];
+    }
+
 
 }

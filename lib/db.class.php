@@ -61,6 +61,14 @@ class db
         }
     }
 
+    public function SingleSelect($query, $params = array())
+    {
+        $result = $this->Query($query, $params);
+        if ($result) {
+            return $result->fetch();
+        }
+    }
+
     public function Count($query, $params = array())
     {
         $result = $this->Query($query, $params);
@@ -69,5 +77,6 @@ class db
         }
     }
 
+
 }
-?>
+

@@ -23,10 +23,31 @@ class Good extends Model {
         ];
     }
 
-    public static function getGoods($categoryId)
+    public static function getGoods($categoryId = null)
     {
-        return db::getInstance()->Select(
-            'SELECT id_category, `name`, price FROM goods WHERE id_category = :category AND status=:status',
-            ['status' => Status::Active, 'category' => $categoryId]);
+        $query = 'SELECT * FROM goods WHERE status=:status';
+        $params = [
+            ':status' => Status::Active
+        ];
+        if ($categoryId) {
+            $categoriesQuery = "SELECT id_category FROM categories WHERE id_category=$categoryId OR parent_id = $categoryId";
+            $categories = db::getInstance()->Select($categoriesQuery);
+            $arr = [];
+            foreach ($categories as $category) {
+                $arr[] = $category['id_category'];
+            }
+            $str =implode(',', $arr);
+            $query .= " AND (id_category IN ($str))";
+        }
+        return db::getInstance()->Select($query, $params);
+    }
+
+    public static function getGood($goodId)
+    {
+        $query = 'SELECT * FROM goods WHERE id_good=:id';
+        $params = [
+            ':id' => $goodId
+        ];
+        return db::getInstance()->SingleSelect($query, $params);
     }
 }
