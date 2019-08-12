@@ -1,0 +1,19 @@
+{% include 'header.html' %}
+<div class="col-sm px-5 mt-3 mx-auto">
+    {% for item in content_data.goods %}
+    <div class="d-inline-block col-lg-4">
+        <div class="col text-center">
+            <img src="../../img/nophoto.png" style="width: 200px;">
+        </div>
+        <div class="col text-center">
+            <a href="#">{{item.name}}</a>
+        </div>
+        {% if session.userName is defined %}
+        <div class="col text-center">
+            <button class="btn btn-default">Add to basket</button>
+        </div>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+{% include 'footer.html' %}
