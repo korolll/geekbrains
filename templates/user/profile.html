@@ -8,17 +8,4 @@
     </li>
     {% endfor %}
 </ul>
-
-<p>Your basket:</p>
-{% if session.basket %}
-<ul>
-    {% for item in session.basket %}
-    <li>
-        <a href="?path=goods&id={{item.id}}" class="category-link">{{ item.name }}</a> / number: {{item.count}}
-    </li>
-    {% endfor %}
-</ul>
-{% else %}
-<p>empty</p>
-{% endif %}
 {% include 'userFooter.html' %}

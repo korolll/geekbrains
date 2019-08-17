@@ -32,8 +32,8 @@ class UserController extends Controller
                 'password' => md5($_POST['password']),
             ]);
 
-            if ($user->login()) {
-                $_SESSION['userName'] = $user->name;
+            if ($userDb = $user->login()) {
+                $_SESSION['user'] = $userDb;
                 $this->goToMain();
             }
         }
@@ -43,13 +43,18 @@ class UserController extends Controller
 
     public function logout()
     {
-        unset($_SESSION['userName']);
+        unset($_SESSION['user']);
         unset($_SESSION['data']);
         unset($_SESSION['basket']);
         $this->goToMain();
     }
 
     public function profile()
+    {
+        return [];
+    }
+
+    public function basket()
     {
         return [];
     }

@@ -51,6 +51,18 @@ class db
     }
 
     /*
+ * Выполнить запрос с выборкой данных
+ */
+    public function Insert($query, $params = array())
+    {
+        $result = $this->Query($query, $params);
+        if ($result) {
+            return $this->db->lastInsertId();
+        }
+        return false;
+    }
+
+    /*
      * Выполнить запрос с выборкой данных
      */
     public function Select($query, $params = array())

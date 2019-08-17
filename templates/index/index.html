@@ -8,7 +8,7 @@
         <div class="col text-center">
             <a href="#">{{item.name}}</a>
         </div>
-        {% if session.userName is defined %}
+        {% if session.user is defined %}
         <div class="col text-center">
             <button class="btn btn-default" onclick="add({{item.id_good}});">Add to basket</button>
         </div>

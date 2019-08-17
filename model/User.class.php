@@ -41,12 +41,11 @@ class User extends Model
     {
         try {
             $query = "SELECT * FROM `" . static::$table . "` WHERE name = ? AND password = ?;";
-            $result = db::getInstance()->Count($query, [$this->name, $this->password]);
-
+            $result = db::getInstance()->SingleSelect($query, [$this->name, $this->password]);
         } catch (PDOException $e) {
             return false;
         }
 
-        return $result == 1;
+        return $result;
     }
 }
