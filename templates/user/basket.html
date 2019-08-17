@@ -1,0 +1,92 @@
+{% include 'userHeader.html' %}
+<h2 class="pt-3">Your basket:</h2>
+{% if session.basket %}
+<form method="post" action="?path=order&action=create">
+    <div class="row py-2">
+        <div class="col bg-light border border-white text-center text-info font-weight-bold py-2">Name</div>
+        <div class="col bg-light border border-white text-center text-info font-weight-bold py-2">Price</div>
+        <div class="col bg-light border border-white text-center text-info font-weight-bold py-2">Number</div>
+        <div class="col bg-light border border-white text-center text-info font-weight-bold py-2">Total</div>
+    </div>
+    {% set num = 0 %}
+    {% for item in session.basket %}
+    {% set num = num + item.price * item.count %}
+
+    <div name="item" class="row">
+        <input type="hidden" data-name="{{ item.name }}" name="{{ item.id }}" value="{{ item.count }}">
+        <div name="itemName" class="col border-bottom border-light py-1">{{ item.name }}</div>
+        <div class="col border-bottom border-light py-1">{{ item.price }}</div>
+        <div name="itemNumber" class="col input-group flex-row border-bottom border-light py-1">
+            <div class="w-25 text-right">
+            <span class="input-group-btn">
+                <button name="calculate" data-direction="minus"
+                        class="btn btn-sm btn-info bg-light text-info font-weight-bold border-light "
+                        type="button">-</button>
+            </span>
+            </div>
+            <div name="itemCount" class="w-50 text-center">
+                {{ item.count }}
+            </div>
+            <div class="w-25 text-left">
+            <span class="input-group-btn">
+                <button name="calculate" data-direction="plus"
+                        class="btn btn-sm btn-info bg-light text-info font-weight-bold border-light"
+                        type="button">+</button>
+            </span>
+            </div>
+        </div>
+        {% set totalItemPrice = item.price * item.count %}
+        <div class="col border-bottom border-light py-1">{{ totalItemPrice|number_format(2, '.', ',') }}</div>
+    </div>
+    {% endfor %}
+    <div class="row">
+        <div name="totalPrice" class="col w-100 text-info text-uppercase text-right py-2 bg-light">
+            Total Price: <span>{{ num|number_format(2, '.', ',') }}</span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col w-100 text-info text-uppercase text-right py-2 bg-light">
+            <input class="form-control-lg" type="submit" value="Submit">
+        </div>
+    </div>
+</form>
+{% else %}
+<p>empty</p>
+{% endif %}
+{% include 'userFooter.html' %}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("button[name='calculate']").click(function (event) {
+            let button = event.target;
+            let direction = $(button).data('direction');
+
+            let itemCountObject = $(button).closest("div[name='itemNumber']").find("div[name='itemCount']");
+            let itemCountVal = parseInt($(itemCountObject).text());
+
+            let itemPriceObject = $(button).closest("div[name='itemNumber']").prev();
+            let itemPriceVal = parseFloat($(itemPriceObject).text());
+
+            let itemTotalPriceObject = $(button).closest("div[name='itemNumber']").next();
+
+            let totalPriceObject = $("div[name='totalPrice'] span");
+            let totalPriceVal = parseFloat($(totalPriceObject).text());
+
+            let itemNameVal = $(button).closest("div[name='item']").find("div[name='itemName']").text();
+
+            if (direction === 'minus' && itemCountVal > 1) {
+                itemCountVal -= 1;
+                $(totalPriceObject).text((totalPriceVal - itemPriceVal).toFixed(2))
+            } else {
+                itemCountVal += 1;
+                $(totalPriceObject).text((totalPriceVal + itemPriceVal).toFixed(2))
+            }
+            $(itemCountObject).text(itemCountVal);
+            let itemTotalPriceVal = itemPriceVal * itemCountVal;
+            $(itemTotalPriceObject).text(itemTotalPriceVal.toFixed(2));
+
+            let input = $("*[data-name='" + itemNameVal + "']");
+            $(input).val(itemCountVal);
+        })
+    })
+</script>

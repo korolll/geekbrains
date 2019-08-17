@@ -1,0 +1,7 @@
+{% include 'userHeader.html' %}
+<form action="?path=user&action=login" method="post">
+    <p>Введите имя: <input type="text" name="userName"/></p>
+    <p>Введите пароль: <input type="password" name="password"></p>
+    <p><input type="submit" value="Войти"></p>
+</form>
+{% include 'userFooter.html' %}

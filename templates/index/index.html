@@ -1,0 +1,33 @@
+{% include 'header.html' %}
+<div class="col-sm px-5 mt-3 mx-auto">
+    {% for item in content_data.goods %}
+    <div class="d-inline-block col-lg-4">
+        <div class="col text-center">
+            <img src="../../img/nophoto.png" style="width: 200px;">
+        </div>
+        <div class="col text-center">
+            <a href="#">{{item.name}}</a>
+        </div>
+        {% if session.user is defined %}
+        <div class="col text-center">
+            <button class="btn btn-default" onclick="add({{item.id_good}});">Add to basket</button>
+        </div>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+{% include 'footer.html' %}
+
+<script type="text/javascript">
+    function add(id) {
+        $.ajax({
+            url: '/index.php?path=user&action=addToBasket&id=' + id + '&asAjax=true',
+            type: 'GET',
+            dataType: 'json'
+        }).done(function(data) {
+            console.log(data)
+        }).fail(function (vsdv) {
+            alert('sdvsbd')
+        });
+    }
+</script>
